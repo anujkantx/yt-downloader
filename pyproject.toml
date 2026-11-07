@@ -1,0 +1,27 @@
+[project]
+name = "yt-downloader"
+version = "1.0.0"
+description = "Modern Windows desktop video downloader using yt-dlp and CustomTkinter"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.11"
+dependencies = [
+    "yt-dlp>=2026.10.26",
+    "customtkinter>=6.0.0",
+    "Pillow>=11.0.0",
+    "platformdirs>=4.0.0",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
