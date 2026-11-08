@@ -53,8 +53,8 @@ class URLInputComponent(ctk.CTkFrame):
 
         paste_btn = ctk.CTkButton(
             actions_frame,
-            text="📋 Paste",
-            width=70,
+            text="Paste",
+            width=65,
             height=28,
             font=FONT_CAPTION,
             fg_color=BG_TERTIARY,
@@ -66,8 +66,8 @@ class URLInputComponent(ctk.CTkFrame):
 
         clear_btn = ctk.CTkButton(
             actions_frame,
-            text="✕ Clear",
-            width=65,
+            text="Clear",
+            width=60,
             height=28,
             font=FONT_CAPTION,
             fg_color=BG_TERTIARY,

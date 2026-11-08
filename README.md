@@ -1,6 +1,8 @@
-# yt-downloader
-
 <div align="center">
+
+<img src="assets/icons/logo.png" alt="yt-downloader logo" width="112" height="112" style="border-radius: 22px;" />
+
+# yt-downloader
 
 [![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12%20%7C%203.13-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)

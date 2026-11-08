@@ -3,6 +3,7 @@
 from collections.abc import Callable
 
 import customtkinter as ctk
+from PIL import Image
 
 from app.ui.theme import (
     ACCENT_HOVER,
@@ -20,6 +21,7 @@ from app.ui.theme import (
     TEXT_PRIMARY,
     TEXT_SECONDARY,
 )
+from app.utils.paths import get_assets_dir
 
 
 class Sidebar(ctk.CTkFrame):
@@ -44,6 +46,7 @@ class Sidebar(ctk.CTkFrame):
         self.on_navigate = on_navigate
         self._current_page = current_page
         self._buttons: dict[str, ctk.CTkButton] = {}
+        self._logo_image: ctk.CTkImage | None = None
 
         self._build_ui()
 
@@ -54,17 +57,34 @@ class Sidebar(ctk.CTkFrame):
         brand_frame = ctk.CTkFrame(self, fg_color="transparent")
         brand_frame.pack(fill="x", padx=16, pady=(22, 20))
 
-        # Modern Emblem
-        emblem = ctk.CTkLabel(
-            brand_frame,
-            text="⚡",
-            width=36,
-            height=36,
-            corner_radius=10,
-            fg_color=ACCENT_PRIMARY,
-            text_color="#FFFFFF",
-            font=("Segoe UI", 18, "bold"),
-        )
+        # Modern Emblem using official logo
+        logo_path = get_assets_dir() / "icons" / "logo.png"
+        if logo_path.exists():
+            try:
+                pil_logo = Image.open(logo_path)
+                self._logo_image = ctk.CTkImage(light_image=pil_logo, dark_image=pil_logo, size=(38, 38))
+            except Exception:
+                pass
+
+        if self._logo_image:
+            emblem = ctk.CTkLabel(
+                brand_frame,
+                text="",
+                image=self._logo_image,
+                width=38,
+                height=38,
+            )
+        else:
+            emblem = ctk.CTkLabel(
+                brand_frame,
+                text="A",
+                width=38,
+                height=38,
+                corner_radius=10,
+                fg_color=ACCENT_PRIMARY,
+                text_color="#FFFFFF",
+                font=("Segoe UI", 16, "bold"),
+            )
         emblem.pack(side="left", padx=(0, 10))
 
         title_box = ctk.CTkFrame(brand_frame, fg_color="transparent")
@@ -92,12 +112,12 @@ class Sidebar(ctk.CTkFrame):
         sep = ctk.CTkFrame(self, height=1, fg_color=BORDER_COLOR)
         sep.pack(fill="x", padx=16, pady=(0, 16))
 
-        # Nav items
+        # Nav items without emojis
         nav_items = [
-            ("downloads", "⬇  Downloads"),
-            ("history", "📜  History"),
-            ("settings", "⚙️  Settings"),
-            ("about", "ℹ️  About"),
+            ("downloads", "Downloads"),
+            ("history", "History"),
+            ("settings", "Settings"),
+            ("about", "About"),
         ]
 
         for page_id, label in nav_items:

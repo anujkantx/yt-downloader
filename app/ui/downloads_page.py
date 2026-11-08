@@ -26,6 +26,7 @@ from app.ui.theme import (
     FONT_BODY_BOLD,
     FONT_CAPTION,
     FONT_HEADING,
+    FONT_SMALL,
     FONT_SUBHEADING,
     FONT_TITLE,
     TEXT_MUTED,
@@ -108,7 +109,7 @@ class DownloadsPage(ctk.CTkFrame):
 
         self.ffmpeg_banner_label = ctk.CTkLabel(
             self.ffmpeg_banner_inner,
-            text="💡 FFmpeg is missing: 1080p+, 4K streams & MP3 conversion require FFmpeg.",
+            text="Notice: FFmpeg is missing. Required for 1080p+, 4K streams & MP3 audio conversion.",
             font=FONT_CAPTION,
             text_color=COLOR_WARNING,
             anchor="w",
@@ -117,7 +118,7 @@ class DownloadsPage(ctk.CTkFrame):
 
         self.ffmpeg_banner_btn = ctk.CTkButton(
             self.ffmpeg_banner_inner,
-            text="⚡ 1-Click Install",
+            text="Install FFmpeg",
             width=120,
             height=28,
             font=FONT_CAPTION,
@@ -166,9 +167,9 @@ class DownloadsPage(ctk.CTkFrame):
 
         browse_btn = ctk.CTkButton(
             loc_action_row,
-            text="📁 Browse",
+            text="Browse",
             font=FONT_CAPTION,
-            width=75,
+            width=70,
             height=28,
             fg_color=BG_TERTIARY,
             hover_color=ACCENT_PRIMARY,
@@ -178,9 +179,9 @@ class DownloadsPage(ctk.CTkFrame):
 
         open_dir_btn = ctk.CTkButton(
             loc_action_row,
-            text="↗ Open",
+            text="Open Folder",
             font=FONT_CAPTION,
-            width=65,
+            width=85,
             height=28,
             fg_color=BG_TERTIARY,
             hover_color=ACCENT_PRIMARY,
@@ -191,9 +192,9 @@ class DownloadsPage(ctk.CTkFrame):
         # Download Button
         self.download_btn = ctk.CTkButton(
             bottom_bar,
-            text="🚀 Start Download",
+            text="Start Download",
             font=FONT_SUBHEADING,
-            width=175,
+            width=160,
             height=44,
             corner_radius=10,
             fg_color=ACCENT_PRIMARY,
@@ -248,8 +249,8 @@ class DownloadsPage(ctk.CTkFrame):
 
         empty_icon = ctk.CTkLabel(
             self.empty_state_frame,
-            text="📥",
-            font=("Segoe UI", 48),
+            text="Queue Empty",
+            font=FONT_HEADING,
             text_color=TEXT_MUTED,
         )
         empty_icon.pack()
@@ -260,7 +261,7 @@ class DownloadsPage(ctk.CTkFrame):
             font=FONT_SUBHEADING,
             text_color=TEXT_MUTED,
         )
-        empty_text.pack(pady=(8, 2))
+        empty_text.pack(pady=(4, 2))
 
         empty_sub = ctk.CTkLabel(
             self.empty_state_frame,
@@ -276,12 +277,13 @@ class DownloadsPage(ctk.CTkFrame):
 
         self.preview_thumb = ctk.CTkLabel(
             self.preview_frame,
-            text="🎬",
+            text="PREVIEW",
             width=100,
             height=65,
             corner_radius=8,
             fg_color=BG_TERTIARY,
-            font=("Segoe UI", 24),
+            font=FONT_SMALL,
+            text_color=TEXT_MUTED,
         )
         self.preview_thumb.grid(row=0, column=0, padx=12, pady=10)
 
@@ -357,7 +359,7 @@ class DownloadsPage(ctk.CTkFrame):
         # Show preview frame right below url input
         self.preview_frame.pack(fill="x", pady=(0, 10), after=self.url_component)
         self.url_component.status_label.configure(
-            text=f"✓ Video ready: {meta.title[:45]}...", text_color=COLOR_SUCCESS
+            text=f"Video ready: {meta.title[:45]}...", text_color=COLOR_SUCCESS
         )
 
     def _browse_directory(self) -> None:
@@ -482,7 +484,7 @@ class DownloadsPage(ctk.CTkFrame):
 
     def _on_inline_ffmpeg_success(self) -> None:
         self.ffmpeg_banner_label.configure(
-            text="✓ FFmpeg installed successfully! 1080p+ and MP3 audio conversion are now active.",
+            text="FFmpeg installed successfully! 1080p+ and MP3 audio conversion are now active.",
             text_color=COLOR_SUCCESS,
         )
         self.ffmpeg_banner_btn.pack_forget()
@@ -493,4 +495,4 @@ class DownloadsPage(ctk.CTkFrame):
             text=f"FFmpeg download failed: {err_msg}",
             text_color=COLOR_DANGER,
         )
-        self.ffmpeg_banner_btn.configure(state="normal", text="⚡ Retry Install")
+        self.ffmpeg_banner_btn.configure(state="normal", text="Retry Install")

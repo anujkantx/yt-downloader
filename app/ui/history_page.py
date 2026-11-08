@@ -19,6 +19,7 @@ from app.ui.theme import (
     COLOR_SUCCESS,
     FONT_BODY_BOLD,
     FONT_CAPTION,
+    FONT_HEADING,
     FONT_SMALL,
     FONT_SUBHEADING,
     FONT_TITLE,
@@ -63,9 +64,9 @@ class HistoryPage(ctk.CTkFrame):
 
         refresh_btn = ctk.CTkButton(
             actions,
-            text="🔄 Refresh",
+            text="Refresh",
             font=FONT_CAPTION,
-            width=80,
+            width=75,
             height=30,
             fg_color=BG_TERTIARY,
             hover_color=ACCENT_PRIMARY,
@@ -75,9 +76,9 @@ class HistoryPage(ctk.CTkFrame):
 
         clear_btn = ctk.CTkButton(
             actions,
-            text="🗑 Clear History",
+            text="Clear History",
             font=FONT_CAPTION,
-            width=100,
+            width=95,
             height=30,
             fg_color="transparent",
             border_width=1,
@@ -99,7 +100,7 @@ class HistoryPage(ctk.CTkFrame):
         # Empty state container
         self.empty_frame = ctk.CTkFrame(self.scroll_frame, fg_color="transparent")
         empty_icon = ctk.CTkLabel(
-            self.empty_frame, text="📜", font=("Segoe UI", 48), text_color=TEXT_MUTED
+            self.empty_frame, text="History Empty", font=FONT_HEADING, text_color=TEXT_MUTED
         )
         empty_icon.pack(pady=(40, 4))
         ctk.CTkLabel(
@@ -121,7 +122,7 @@ class HistoryPage(ctk.CTkFrame):
             self.empty_frame = ctk.CTkFrame(self.scroll_frame, fg_color="transparent")
             self.empty_frame.pack(fill="both", expand=True, pady=40)
             ctk.CTkLabel(
-                self.empty_frame, text="📜", font=("Segoe UI", 48), text_color=TEXT_MUTED
+                self.empty_frame, text="History Empty", font=FONT_HEADING, text_color=TEXT_MUTED
             ).pack(pady=(0, 6))
             ctk.CTkLabel(
                 self.empty_frame,
@@ -220,7 +221,7 @@ class HistoryPage(ctk.CTkFrame):
         if record.status == "completed" and record.output_path:
             path_label = ctk.CTkLabel(
                 content,
-                text=f"📁 {record.output_path}",
+                text=f"File: {record.output_path}",
                 font=FONT_CAPTION,
                 text_color=TEXT_SECONDARY,
                 anchor="w",
@@ -230,7 +231,7 @@ class HistoryPage(ctk.CTkFrame):
         elif record.status == "failed" and record.error_message:
             err_label = ctk.CTkLabel(
                 content,
-                text=f"⚠ {record.error_message}",
+                text=f"Error: {record.error_message}",
                 font=FONT_CAPTION,
                 text_color=COLOR_DANGER,
                 anchor="w",
@@ -245,9 +246,9 @@ class HistoryPage(ctk.CTkFrame):
         # Copy URL
         copy_btn = ctk.CTkButton(
             actions_row,
-            text="📋 Copy URL",
+            text="Copy URL",
             font=FONT_CAPTION,
-            width=75,
+            width=70,
             height=24,
             fg_color="transparent",
             border_width=1,
@@ -261,9 +262,9 @@ class HistoryPage(ctk.CTkFrame):
         if record.status == "completed" and record.output_path:
             open_btn = ctk.CTkButton(
                 actions_row,
-                text="▶ Play / Open",
+                text="Play / Open",
                 font=FONT_CAPTION,
-                width=85,
+                width=80,
                 height=24,
                 fg_color=BG_TERTIARY,
                 hover_color=ACCENT_PRIMARY,
@@ -273,9 +274,9 @@ class HistoryPage(ctk.CTkFrame):
 
             folder_btn = ctk.CTkButton(
                 actions_row,
-                text="↗ Open Folder",
+                text="Open Folder",
                 font=FONT_CAPTION,
-                width=85,
+                width=80,
                 height=24,
                 fg_color=BG_TERTIARY,
                 hover_color=ACCENT_PRIMARY,
@@ -287,7 +288,7 @@ class HistoryPage(ctk.CTkFrame):
         if record.status == "failed":
             retry_btn = ctk.CTkButton(
                 actions_row,
-                text="🔄 Retry",
+                text="Retry",
                 font=FONT_CAPTION,
                 width=65,
                 height=24,
@@ -300,7 +301,7 @@ class HistoryPage(ctk.CTkFrame):
         # Delete Entry (does not delete file on disk unless user specifies)
         delete_btn = ctk.CTkButton(
             actions_row,
-            text="✕ Remove",
+            text="Remove",
             font=FONT_CAPTION,
             width=65,
             height=24,

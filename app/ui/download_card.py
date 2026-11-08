@@ -68,12 +68,13 @@ class DownloadCard(ctk.CTkFrame):
         # Left: Thumbnail / placeholder
         self.thumb_label = ctk.CTkLabel(
             self,
-            text="🎬",
+            text="MEDIA",
             width=96,
             height=64,
             corner_radius=8,
             fg_color=BG_TERTIARY,
-            font=("Segoe UI", 24),
+            font=FONT_SMALL,
+            text_color=TEXT_MUTED,
         )
         self.thumb_label.grid(row=0, column=0, rowspan=2, padx=(14, 12), pady=12, sticky="n")
 
@@ -144,9 +145,9 @@ class DownloadCard(ctk.CTkFrame):
         # Create action buttons
         self.cancel_btn = ctk.CTkButton(
             self.actions_row,
-            text="✕ Cancel",
+            text="Cancel",
             font=FONT_CAPTION,
-            width=70,
+            width=65,
             height=28,
             corner_radius=8,
             fg_color="transparent",
@@ -158,9 +159,9 @@ class DownloadCard(ctk.CTkFrame):
 
         self.retry_btn = ctk.CTkButton(
             self.actions_row,
-            text="🔄 Retry",
+            text="Retry",
             font=FONT_CAPTION,
-            width=70,
+            width=65,
             height=28,
             corner_radius=8,
             fg_color=ACCENT_PRIMARY,
@@ -170,9 +171,9 @@ class DownloadCard(ctk.CTkFrame):
 
         self.open_file_btn = ctk.CTkButton(
             self.actions_row,
-            text="▶ Play File",
+            text="Play",
             font=FONT_CAPTION,
-            width=80,
+            width=65,
             height=28,
             corner_radius=8,
             fg_color=BG_TERTIARY,
@@ -182,9 +183,9 @@ class DownloadCard(ctk.CTkFrame):
 
         self.open_folder_btn = ctk.CTkButton(
             self.actions_row,
-            text="📁 Show in Folder",
+            text="Show in Folder",
             font=FONT_CAPTION,
-            width=110,
+            width=95,
             height=28,
             corner_radius=8,
             fg_color=BG_TERTIARY,
@@ -194,9 +195,9 @@ class DownloadCard(ctk.CTkFrame):
 
         self.remove_btn = ctk.CTkButton(
             self.actions_row,
-            text="✕ Dismiss",
+            text="Dismiss",
             font=FONT_CAPTION,
-            width=70,
+            width=65,
             height=28,
             corner_radius=8,
             fg_color="transparent",

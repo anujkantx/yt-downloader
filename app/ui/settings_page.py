@@ -85,8 +85,8 @@ class SettingsPage(ctk.CTkFrame):
 
         browse_btn = ctk.CTkButton(
             dir_row,
-            text="📁 Browse",
-            width=80,
+            text="Browse",
+            width=75,
             font=FONT_CAPTION,
             fg_color=BG_TERTIARY,
             hover_color=ACCENT_PRIMARY,
@@ -96,8 +96,8 @@ class SettingsPage(ctk.CTkFrame):
 
         open_dir_btn = ctk.CTkButton(
             dir_row,
-            text="↗ Open",
-            width=70,
+            text="Open Folder",
+            width=85,
             font=FONT_CAPTION,
             fg_color=BG_TERTIARY,
             hover_color=ACCENT_PRIMARY,
@@ -214,8 +214,8 @@ class SettingsPage(ctk.CTkFrame):
 
         ffmpeg_browse_btn = ctk.CTkButton(
             ffmpeg_row,
-            text="📁 Browse",
-            width=80,
+            text="Browse",
+            width=75,
             font=FONT_CAPTION,
             fg_color=BG_TERTIARY,
             hover_color=ACCENT_PRIMARY,
@@ -240,7 +240,7 @@ class SettingsPage(ctk.CTkFrame):
 
         self.auto_download_ffmpeg_btn = ctk.CTkButton(
             action_row,
-            text="⚡ Auto-Download FFmpeg (1-Click)",
+            text="Auto-Download FFmpeg",
             font=FONT_CAPTION,
             fg_color=ACCENT_PRIMARY,
             hover_color=ACCENT_HOVER,
@@ -358,9 +358,9 @@ class SettingsPage(ctk.CTkFrame):
 
         save_btn = ctk.CTkButton(
             action_bar,
-            text="💾 Save Settings",
+            text="Save Settings",
             font=FONT_BODY_BOLD,
-            width=130,
+            width=120,
             height=34,
             fg_color=ACCENT_PRIMARY,
             hover_color=ACCENT_HOVER,
@@ -415,21 +415,21 @@ class SettingsPage(ctk.CTkFrame):
 
         if is_avail:
             self.ffmpeg_status_label.configure(
-                text=f"✓ {message}",
+                text=message,
                 text_color=COLOR_SUCCESS,
             )
             self.auto_download_ffmpeg_btn.configure(
-                text="⚡ Re-download FFmpeg",
+                text="Re-download FFmpeg",
                 fg_color=BG_TERTIARY,
                 hover_color=ACCENT_PRIMARY,
             )
         else:
             self.ffmpeg_status_label.configure(
-                text=f"⚠ {message}",
+                text=message,
                 text_color=COLOR_WARNING,
             )
             self.auto_download_ffmpeg_btn.configure(
-                text="⚡ Auto-Download FFmpeg (1-Click)",
+                text="Auto-Download FFmpeg",
                 fg_color=ACCENT_PRIMARY,
                 hover_color=ACCENT_HOVER,
             )
@@ -470,7 +470,7 @@ class SettingsPage(ctk.CTkFrame):
 
         self.ffmpeg_progress_bar.set(1.0)
         self.ffmpeg_progress_label.configure(
-            text="✓ FFmpeg installed and verified successfully!",
+            text="FFmpeg installed and verified successfully!",
             text_color=COLOR_SUCCESS,
         )
         self.after(3500, self.ffmpeg_progress_frame.pack_forget)
@@ -485,7 +485,7 @@ class SettingsPage(ctk.CTkFrame):
         )
         self.auto_download_ffmpeg_btn.configure(
             state="normal",
-            text="⚡ Retry Auto-Download",
+            text="Retry Auto-Download",
             fg_color=COLOR_DANGER,
         )
 

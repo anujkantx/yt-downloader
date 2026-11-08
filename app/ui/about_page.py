@@ -4,6 +4,7 @@ import sys
 
 import customtkinter as ctk
 import yt_dlp
+from PIL import Image
 
 from app.services.download_service import DownloadService
 from app.ui.theme import (
@@ -19,6 +20,7 @@ from app.ui.theme import (
     TEXT_PRIMARY,
     TEXT_SECONDARY,
 )
+from app.utils.paths import get_assets_dir
 
 
 class AboutPage(ctk.CTkFrame):
@@ -43,12 +45,30 @@ class AboutPage(ctk.CTkFrame):
         header = ctk.CTkFrame(container, fg_color="transparent")
         header.pack(fill="x", padx=30, pady=(30, 20))
 
-        logo = ctk.CTkLabel(
-            header,
-            text="⚡",
-            font=("Segoe UI", 48),
-            text_color=ACCENT_PRIMARY,
-        )
+        logo_path = get_assets_dir() / "icons" / "logo.png"
+        self._about_logo = None
+        if logo_path.exists():
+            try:
+                pil_logo = Image.open(logo_path)
+                self._about_logo = ctk.CTkImage(light_image=pil_logo, dark_image=pil_logo, size=(54, 54))
+            except Exception:
+                pass
+
+        if self._about_logo:
+            logo = ctk.CTkLabel(
+                header,
+                text="",
+                image=self._about_logo,
+                width=54,
+                height=54,
+            )
+        else:
+            logo = ctk.CTkLabel(
+                header,
+                text="A",
+                font=("Segoe UI", 32, "bold"),
+                text_color=ACCENT_PRIMARY,
+            )
         logo.pack(side="left", padx=(0, 16))
 
         title_box = ctk.CTkFrame(header, fg_color="transparent")
