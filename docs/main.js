@@ -167,7 +167,6 @@ function initDynamicDownloadButtons() {
   const windowsInstallerUrl = "https://github.com/anujkantx/yt-downloader/releases/latest/download/VideoDownloader-Setup.exe";
   const windowsPortableZipUrl = "https://github.com/anujkantx/yt-downloader/releases/latest/download/VideoDownloader-Portable.zip";
   const sealApkDownloadUrl = resolvedSealApkUrl || "https://github.com/JunkFood02/Seal/releases/latest";
-  const sealRepoUrl = "https://github.com/JunkFood02/Seal";
   const githubRepoUrl = "https://github.com/anujkantx/yt-downloader";
 
   if (device.isAndroid || (device.isMobile && !device.isWindows)) {
