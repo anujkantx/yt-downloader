@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>yt-downloader — Modern Windows Video Downloader</title>
-  <meta name="description" content="High-performance, freeze-free Windows desktop video downloader built with Python, CustomTkinter, and yt-dlp. Download 4K UHD videos and high-bitrate MP3s effortlessly.">
+  <meta name="description"
+    content="High-performance, freeze-free Windows desktop video downloader built with Python, CustomTkinter, and yt-dlp. Download 4K UHD videos and high-bitrate MP3s effortlessly.">
   <link rel="icon" type="image/png" href="logo.png">
-  
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Lucide Icons -->
@@ -14,13 +16,16 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
 
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: {
+            display: ['"Outfit"', 'sans-serif'],
             sans: ['"Plus Jakarta Sans"', 'sans-serif'],
             mono: ['"JetBrains Mono"', 'monospace'],
           },
@@ -55,7 +60,7 @@
 
     .textured-bg {
       background-color: #F8FAFC;
-      background-image: 
+      background-image:
         radial-gradient(#CBD5E1 1.2px, transparent 1.2px),
         linear-gradient(to right, rgba(226, 232, 240, 0.45) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(226, 232, 240, 0.45) 1px, transparent 1px);
@@ -67,6 +72,7 @@
       0% {
         background-position: 0px 0px, 0px 0px, 0px 0px;
       }
+
       100% {
         background-position: 96px 96px, 96px 96px, 96px 96px;
       }
@@ -74,9 +80,12 @@
 
     /* Subtle Floating Keyframes */
     @keyframes floatElement {
-      0%, 100% {
+
+      0%,
+      100% {
         transform: translateY(0px);
       }
+
       50% {
         transform: translateY(-6px);
       }
@@ -88,11 +97,25 @@
 
     /* Animated Simulated Download Bar */
     @keyframes simulateDownload {
-      0% { width: 12%; }
-      30% { width: 45%; }
-      70% { width: 82%; }
-      92% { width: 96%; }
-      100% { width: 100%; }
+      0% {
+        width: 12%;
+      }
+
+      30% {
+        width: 45%;
+      }
+
+      70% {
+        width: 82%;
+      }
+
+      92% {
+        width: 96%;
+      }
+
+      100% {
+        width: 100%;
+      }
     }
 
     .animate-download-bar {
@@ -103,34 +126,42 @@
     .card-shadow {
       box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
     }
+
     .card-shadow-hover {
       box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.09), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
     }
   </style>
 </head>
+
 <body class="min-h-screen textured-bg selection:bg-slate-900 selection:text-white">
 
   <!-- Navigation Bar -->
   <header class="sticky top-0 z-50 border-b border-surface-border bg-white/90 backdrop-blur-md">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="logo.png" alt="yt-downloader logo" class="w-9 h-9 rounded-xl object-contain shadow-sm border border-slate-200">
-        <span class="text-lg font-extrabold tracking-tight text-slate-900">yt-downloader</span>
-        <span class="text-xs px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200 font-semibold">v1.0.0</span>
+        <img src="logo.png" alt="YT-downloader logo"
+          class="w-9 h-9 rounded-xl object-contain shadow-sm border border-slate-200">
+        <span class="font-display font-black text-xl tracking-tight text-slate-950">
+          <span class="text-red-600">YT</span><span
+            class="text-slate-300 font-light mx-0.5">-</span><span>downloader</span>
+        </span>
+        <span
+          class="text-xs px-2.5 py-0.5 rounded-full bg-red-50 text-red-600 border border-red-200 font-bold">v1.0.0</span>
       </div>
 
       <nav class="hidden md:flex items-center gap-8 text-sm font-semibold text-slate-600">
         <a href="#features" class="hover:text-slate-950 transition">Features</a>
         <a href="#demo" class="hover:text-slate-950 transition">App Preview</a>
         <a href="#quickstart" class="hover:text-slate-950 transition">Setup</a>
-        <a href="https://github.com/anujkantx/yt-downloader" target="_blank" class="hover:text-slate-950 transition flex items-center gap-1.5">
+        <a href="https://github.com/anujkantx/yt-downloader" target="_blank"
+          class="hover:text-slate-950 transition flex items-center gap-1.5">
           <i data-lucide="github" class="w-4 h-4"></i> GitHub
         </a>
       </nav>
 
       <div class="flex items-center gap-3">
         <a href="https://github.com/anujkantx/yt-downloader/releases" target="_blank"
-           class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold transition flex items-center gap-2 shadow-sm">
+          class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-semibold transition flex items-center gap-2 shadow-sm">
           <i data-lucide="download" class="w-4 h-4"></i>
           <span>Download .exe</span>
         </a>
@@ -141,53 +172,61 @@
   <!-- Hero Section -->
   <section class="pt-20 pb-16 px-6 text-center max-w-4xl mx-auto">
     <!-- Floating Badge -->
-    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 text-xs font-semibold uppercase tracking-wider mb-8 card-shadow animate-float">
+    <div
+      class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200 text-slate-700 text-xs font-semibold uppercase tracking-wider mb-8 card-shadow animate-float">
       <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
       <span>Open Source Windows Desktop Application</span>
     </div>
 
     <!-- Main Headline (Solid colors, zero gradients) -->
     <h1 class="text-4xl sm:text-6xl font-extrabold text-slate-950 tracking-tight leading-tight sm:leading-none mb-6">
-      Fast & Freeze-Free <br>
-      <span class="text-slate-700">Video Archival for Windows.</span>
+      Download 4K Videos & Audio<br>
+      <span class="text-slate-700">Fast, Free, and Zero Ads.<span>
     </h1>
 
     <p class="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
-      A lightweight desktop client built with Python, CustomTkinter, and yt-dlp. Features 4K UHD streams, multi-task queuing, 1-click FFmpeg setup, and persistent SQLite history.
+      A lightweight Windows desktop application. Features 4K UHD video & highest bitrate audio download, with multi-task
+      queuing, 1-click setup, and
+      persistent SQLite history.
     </p>
 
     <!-- Call to Actions -->
     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
       <a href="https://github.com/anujkantx/yt-downloader/releases" target="_blank"
-         class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base shadow-md transition flex items-center justify-center gap-2.5">
+        class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base shadow-md transition flex items-center justify-center gap-2.5">
         <i data-lucide="download" class="w-5 h-5"></i>
         <span>Download for Windows (64-bit)</span>
       </a>
       <a href="https://github.com/anujkantx/yt-downloader" target="_blank"
-         class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-semibold text-base transition flex items-center justify-center gap-2 card-shadow">
+        class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-semibold text-base transition flex items-center justify-center gap-2 card-shadow">
         <i data-lucide="star" class="w-5 h-5 text-amber-500 fill-amber-500"></i>
         <span>Star on GitHub</span>
       </a>
     </div>
 
     <div class="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-500 font-medium">
-      <span class="flex items-center gap-1.5"><i data-lucide="check" class="w-4 h-4 text-emerald-600 font-bold"></i> 100% Ad-Free & Clean</span>
-      <span class="flex items-center gap-1.5"><i data-lucide="check" class="w-4 h-4 text-emerald-600 font-bold"></i> MIT License</span>
-      <span class="flex items-center gap-1.5"><i data-lucide="check" class="w-4 h-4 text-emerald-600 font-bold"></i> Windows 10 & 11</span>
+      <span class="flex items-center gap-1.5"><i data-lucide="check" class="w-4 h-4 text-emerald-600 font-bold"></i>
+        100% Ad-Free & Clean</span>
+      <span class="flex items-center gap-1.5"><i data-lucide="check" class="w-4 h-4 text-emerald-600 font-bold"></i> MIT
+        License</span>
+      <span class="flex items-center gap-1.5"><i data-lucide="check" class="w-4 h-4 text-emerald-600 font-bold"></i>
+        Windows 10 & 11</span>
     </div>
   </section>
 
   <!-- Interactive App Window Mockup (Light Theme + Animated Progress) -->
   <section id="demo" class="max-w-5xl mx-auto px-6 mb-24">
     <div class="rounded-2xl bg-white card-shadow border border-slate-200 overflow-hidden ring-1 ring-slate-200/60">
-      
+
       <!-- Title Bar -->
       <div class="h-10 bg-slate-100 border-b border-slate-200 px-4 flex items-center justify-between select-none">
         <div class="flex items-center gap-2">
           <div class="w-3 h-3 rounded-full bg-slate-300 border border-slate-400"></div>
           <div class="w-3 h-3 rounded-full bg-slate-300 border border-slate-400"></div>
           <div class="w-3 h-3 rounded-full bg-slate-300 border border-slate-400"></div>
-          <span class="text-xs text-slate-600 font-semibold ml-2">yt-downloader — Desktop Edition</span>
+          <span class="text-xs text-slate-600 font-semibold ml-2"><span
+              class="font-display font-black text-slate-900"><span class="text-red-600">YT</span>-downloader</span> —
+            Desktop Edition</span>
         </div>
         <div class="text-[11px] text-slate-400 font-mono">1080 × 740</div>
       </div>
@@ -198,24 +237,30 @@
         <div class="col-span-3 bg-slate-50 border-r border-slate-200 p-4 flex flex-col justify-between">
           <div class="space-y-4">
             <div class="flex items-center gap-2.5 px-2">
-              <img src="logo.png" alt="Logo" class="w-8 h-8 rounded-lg object-contain border border-slate-200 shadow-xs">
+              <img src="logo.png" alt="Logo"
+                class="w-8 h-8 rounded-lg object-contain border border-slate-200 shadow-xs">
               <div>
-                <div class="text-xs font-bold text-slate-900">yt-downloader</div>
+                <div class="font-display text-xs font-black tracking-tight text-slate-900"><span
+                    class="text-red-600">YT</span>-downloader</div>
                 <div class="text-[10px] text-slate-500 font-mono">v1.0.0</div>
               </div>
             </div>
 
             <nav class="space-y-1 pt-2">
-              <div class="px-3 py-2 rounded-lg bg-slate-900 text-white text-xs font-semibold flex items-center gap-2.5 shadow-sm">
+              <div
+                class="px-3 py-2 rounded-lg bg-slate-900 text-white text-xs font-semibold flex items-center gap-2.5 shadow-sm">
                 <i data-lucide="arrow-down-circle" class="w-4 h-4"></i> Downloads
               </div>
-              <div class="px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-200/60 text-xs font-medium flex items-center gap-2.5 transition">
+              <div
+                class="px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-200/60 text-xs font-medium flex items-center gap-2.5 transition">
                 <i data-lucide="history" class="w-4 h-4"></i> History
               </div>
-              <div class="px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-200/60 text-xs font-medium flex items-center gap-2.5 transition">
+              <div
+                class="px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-200/60 text-xs font-medium flex items-center gap-2.5 transition">
                 <i data-lucide="settings" class="w-4 h-4"></i> Settings
               </div>
-              <div class="px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-200/60 text-xs font-medium flex items-center gap-2.5 transition">
+              <div
+                class="px-3 py-2 rounded-lg text-slate-600 hover:bg-slate-200/60 text-xs font-medium flex items-center gap-2.5 transition">
                 <i data-lucide="info" class="w-4 h-4"></i> About
               </div>
             </nav>
@@ -234,11 +279,16 @@
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-slate-800">Video URLs (Single or Batch)</span>
               <div class="flex gap-2 text-xs">
-                <button class="px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-700 font-semibold card-shadow hover:bg-slate-50 flex items-center gap-1.5"><i data-lucide="clipboard" class="w-3 h-3"></i> Paste</button>
-                <button class="px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-500 hover:bg-slate-50 flex items-center gap-1.5"><i data-lucide="x" class="w-3 h-3"></i> Clear</button>
+                <button
+                  class="px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-700 font-semibold card-shadow hover:bg-slate-50 flex items-center gap-1.5"><i
+                    data-lucide="clipboard" class="w-3 h-3"></i> Paste</button>
+                <button
+                  class="px-2.5 py-1 rounded-md bg-white border border-slate-200 text-slate-500 hover:bg-slate-50 flex items-center gap-1.5"><i
+                    data-lucide="x" class="w-3 h-3"></i> Clear</button>
               </div>
             </div>
-            <div class="p-3 rounded-lg bg-white border border-slate-200 font-mono text-xs text-slate-800 flex items-center justify-between card-shadow">
+            <div
+              class="p-3 rounded-lg bg-white border border-slate-200 font-mono text-xs text-slate-800 flex items-center justify-between card-shadow">
               <span>https://www.youtube.com/watch?v=dQw4w9WgXcQ</span>
               <span class="text-[10px] text-emerald-600 font-bold bg-emerald-50 px-2 py-0.5 rounded">✓ Valid URL</span>
             </div>
@@ -264,11 +314,13 @@
                   <i data-lucide="play" class="w-4 h-4 fill-white text-white"></i>
                 </div>
                 <div>
-                  <div class="text-xs font-bold text-slate-900 line-clamp-1">Rick Astley - Never Gonna Give You Up (Official Music Video)</div>
+                  <div class="text-xs font-bold text-slate-900 line-clamp-1">Rick Astley - Never Gonna Give You Up
+                    (Official Music Video)</div>
                   <div class="text-[11px] text-slate-500">Rick Astley • 3:32 • 2160p (MP4)</div>
                 </div>
               </div>
-              <span class="text-[11px] px-2.5 py-0.5 rounded-full bg-slate-900 text-white font-semibold">Downloading</span>
+              <span
+                class="text-[11px] px-2.5 py-0.5 rounded-full bg-slate-900 text-white font-semibold">Downloading</span>
             </div>
 
             <!-- Animated Progress Bar -->
@@ -278,7 +330,8 @@
 
             <div class="flex items-center justify-between text-[11px] text-slate-600 font-mono font-medium">
               <span>84.2 MB / 116.8 MB</span>
-              <span class="text-slate-900 font-bold flex items-center gap-1.5"><i data-lucide="gauge" class="w-3.5 h-3.5 text-slate-700"></i> 12.4 MB/s • ETA: 3s</span>
+              <span class="text-slate-900 font-bold flex items-center gap-1.5"><i data-lucide="gauge"
+                  class="w-3.5 h-3.5 text-slate-700"></i> 12.4 MB/s • ETA: 3s</span>
             </div>
           </div>
         </div>
@@ -295,8 +348,10 @@
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <!-- Feature 1 -->
-      <div class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow hover:card-shadow-hover hover:-translate-y-1 transition duration-300 space-y-3">
-        <div class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-900 flex items-center justify-center font-bold">
+      <div
+        class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow hover:card-shadow-hover hover:-translate-y-1 transition duration-300 space-y-3">
+        <div
+          class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-900 flex items-center justify-center font-bold">
           <i data-lucide="zap" class="w-5 h-5"></i>
         </div>
         <h3 class="text-lg font-bold text-slate-900">Non-Blocking Async UI</h3>
@@ -306,8 +361,10 @@
       </div>
 
       <!-- Feature 2 -->
-      <div class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow hover:card-shadow-hover hover:-translate-y-1 transition duration-300 space-y-3">
-        <div class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-900 flex items-center justify-center font-bold">
+      <div
+        class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow hover:card-shadow-hover hover:-translate-y-1 transition duration-300 space-y-3">
+        <div
+          class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-900 flex items-center justify-center font-bold">
           <i data-lucide="film" class="w-5 h-5"></i>
         </div>
         <h3 class="text-lg font-bold text-slate-900">4K UHD & Audio Extraction</h3>
@@ -317,19 +374,24 @@
       </div>
 
       <!-- Feature 3 -->
-      <div class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow hover:card-shadow-hover hover:-translate-y-1 transition duration-300 space-y-3">
-        <div class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-900 flex items-center justify-center font-bold">
+      <div
+        class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow hover:card-shadow-hover hover:-translate-y-1 transition duration-300 space-y-3">
+        <div
+          class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-900 flex items-center justify-center font-bold">
           <i data-lucide="download-cloud" class="w-5 h-5"></i>
         </div>
         <h3 class="text-lg font-bold text-slate-900">1-Click FFmpeg Setup</h3>
         <p class="text-sm text-slate-600 leading-relaxed">
-          Missing FFmpeg? Download and auto-configure it with a single click directly inside the app with zero manual steps.
+          Missing FFmpeg? Download and auto-configure it with a single click directly inside the app with zero manual
+          steps.
         </p>
       </div>
 
       <!-- Feature 4 -->
-      <div class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow hover:card-shadow-hover hover:-translate-y-1 transition duration-300 space-y-3">
-        <div class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-900 flex items-center justify-center font-bold">
+      <div
+        class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow hover:card-shadow-hover hover:-translate-y-1 transition duration-300 space-y-3">
+        <div
+          class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-900 flex items-center justify-center font-bold">
           <i data-lucide="database" class="w-5 h-5"></i>
         </div>
         <h3 class="text-lg font-bold text-slate-900">SQLite History Vault</h3>
@@ -339,8 +401,10 @@
       </div>
 
       <!-- Feature 5 -->
-      <div class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow hover:card-shadow-hover hover:-translate-y-1 transition duration-300 space-y-3">
-        <div class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-900 flex items-center justify-center font-bold">
+      <div
+        class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow hover:card-shadow-hover hover:-translate-y-1 transition duration-300 space-y-3">
+        <div
+          class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-900 flex items-center justify-center font-bold">
           <i data-lucide="shield-check" class="w-5 h-5"></i>
         </div>
         <h3 class="text-lg font-bold text-slate-900">Safe Windows Filesystem</h3>
@@ -350,13 +414,16 @@
       </div>
 
       <!-- Feature 6 -->
-      <div class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow hover:card-shadow-hover hover:-translate-y-1 transition duration-300 space-y-3">
-        <div class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-900 flex items-center justify-center font-bold">
+      <div
+        class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow hover:card-shadow-hover hover:-translate-y-1 transition duration-300 space-y-3">
+        <div
+          class="w-10 h-10 rounded-xl bg-slate-100 border border-slate-200 text-slate-900 flex items-center justify-center font-bold">
           <i data-lucide="code-2" class="w-5 h-5"></i>
         </div>
         <h3 class="text-lg font-bold text-slate-900">Open Source & Extensible</h3>
         <p class="text-sm text-slate-600 leading-relaxed">
-          MIT Licensed. Full pytest suite, Ruff code style, and automated GitHub Actions CI workflow for easy contributions.
+          MIT Licensed. Full pytest suite, Ruff code style, and automated GitHub Actions CI workflow for easy
+          contributions.
         </p>
       </div>
     </div>
@@ -373,23 +440,27 @@
       <!-- For Users -->
       <div class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow flex flex-col justify-between space-y-6">
         <div class="space-y-3">
-          <div class="inline-block px-3 py-1 rounded-md bg-slate-100 text-slate-800 text-xs font-bold uppercase tracking-wider">
+          <div
+            class="inline-block px-3 py-1 rounded-md bg-slate-100 text-slate-800 text-xs font-bold uppercase tracking-wider">
             For Regular Users
           </div>
           <h3 class="text-xl font-bold text-slate-950">Windows Setup Installer</h3>
           <p class="text-sm text-slate-600 leading-relaxed">
-            Download the standalone installer (<code class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono text-slate-800">VideoDownloader-Setup.exe</code>). Installs cleanly to LocalAppData and registers Start Menu shortcuts.
+            Download the standalone installer (<code
+              class="bg-slate-100 px-1.5 py-0.5 rounded text-xs font-mono text-slate-800">VideoDownloader-Setup.exe</code>).
+            Installs cleanly to LocalAppData and registers Start Menu shortcuts.
           </p>
         </div>
         <a href="https://github.com/anujkantx/yt-downloader/releases" target="_blank"
-           class="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm transition text-center flex items-center justify-center gap-2 shadow-sm">
+          class="w-full py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm transition text-center flex items-center justify-center gap-2 shadow-sm">
           <i data-lucide="download" class="w-4 h-4"></i> Download Installer
         </a>
       </div>
 
       <!-- For Developers -->
       <div class="p-6 rounded-2xl bg-white border border-slate-200 card-shadow space-y-4">
-        <div class="inline-block px-3 py-1 rounded-md bg-slate-100 text-slate-800 text-xs font-bold uppercase tracking-wider">
+        <div
+          class="inline-block px-3 py-1 rounded-md bg-slate-100 text-slate-800 text-xs font-bold uppercase tracking-wider">
           For Developers
         </div>
         <h3 class="text-xl font-bold text-slate-950">Run from Source</h3>
@@ -408,17 +479,21 @@ python main.py</pre>
   <footer class="border-t border-slate-200 py-12 px-6 text-center text-sm text-slate-500 bg-white">
     <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-2.5">
-        <img src="logo.png" alt="yt-downloader logo" class="w-6 h-6 rounded-md object-contain border border-slate-200">
-        <span class="font-bold text-slate-800">yt-downloader</span>
+        <img src="logo.png" alt="YT-downloader logo" class="w-6 h-6 rounded-md object-contain border border-slate-200">
+        <span class="font-display font-black text-slate-950 tracking-tight"><span class="text-red-600">YT</span><span
+            class="text-slate-400 font-light mx-0.5">-</span><span>downloader</span></span>
         <span>• MIT License</span>
       </div>
       <div>
-        Made with ❤️ by <a href="https://github.com/anujkantx" class="text-slate-900 font-semibold hover:underline">Anujkant</a> and contributors.
+        Made with ❤️ by <a href="https://github.com/anujkantx"
+          class="text-slate-900 font-semibold hover:underline">Anujkant</a> and contributors.
       </div>
       <div class="flex items-center gap-4 text-slate-600 font-medium">
         <a href="https://github.com/anujkantx/yt-downloader" class="hover:text-slate-950 transition">GitHub</a>
-        <a href="https://github.com/anujkantx/yt-downloader/blob/main/CONTRIBUTING.md" class="hover:text-slate-950 transition">Contributing</a>
-        <a href="https://github.com/anujkantx/yt-downloader/blob/main/LICENSE" class="hover:text-slate-950 transition">License</a>
+        <a href="https://github.com/anujkantx/yt-downloader/blob/main/CONTRIBUTING.md"
+          class="hover:text-slate-950 transition">Contributing</a>
+        <a href="https://github.com/anujkantx/yt-downloader/blob/main/LICENSE"
+          class="hover:text-slate-950 transition">License</a>
       </div>
     </div>
   </footer>
@@ -427,4 +502,5 @@ python main.py</pre>
     lucide.createIcons();
   </script>
 </body>
+
 </html>

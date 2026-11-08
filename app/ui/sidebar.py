@@ -92,7 +92,7 @@ class Sidebar(ctk.CTkFrame):
 
         brand_text = ctk.CTkLabel(
             title_box,
-            text="yt-downloader",
+            text="YT-downloader",
             font=FONT_HEADING,
             text_color=TEXT_PRIMARY,
             anchor="w",
