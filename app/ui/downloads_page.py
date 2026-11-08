@@ -1,5 +1,6 @@
 """Downloads view handling URL entry, metadata preview, options, and live tasks."""
 
+import threading
 from tkinter import filedialog
 
 import customtkinter as ctk
@@ -20,6 +21,7 @@ from app.ui.theme import (
     COLOR_DANGER,
     COLOR_INFO,
     COLOR_SUCCESS,
+    COLOR_WARNING,
     FONT_BODY,
     FONT_BODY_BOLD,
     FONT_CAPTION,
@@ -92,6 +94,41 @@ class DownloadsPage(ctk.CTkFrame):
             default_format=current_settings.default_format,
         )
         self.selector.pack(fill="x", pady=(0, 10))
+
+        # FFmpeg warning and 1-click install banner (shown if FFmpeg is not found)
+        self.ffmpeg_banner = ctk.CTkFrame(
+            top_container,
+            fg_color=BG_SECONDARY,
+            corner_radius=10,
+            border_width=1,
+            border_color=BORDER_COLOR,
+        )
+        self.ffmpeg_banner_inner = ctk.CTkFrame(self.ffmpeg_banner, fg_color="transparent")
+        self.ffmpeg_banner_inner.pack(fill="x", padx=12, pady=8)
+
+        self.ffmpeg_banner_label = ctk.CTkLabel(
+            self.ffmpeg_banner_inner,
+            text="💡 FFmpeg is missing: 1080p+, 4K streams & MP3 conversion require FFmpeg.",
+            font=FONT_CAPTION,
+            text_color=COLOR_WARNING,
+            anchor="w",
+        )
+        self.ffmpeg_banner_label.pack(side="left", fill="x", expand=True)
+
+        self.ffmpeg_banner_btn = ctk.CTkButton(
+            self.ffmpeg_banner_inner,
+            text="⚡ 1-Click Install",
+            width=120,
+            height=28,
+            font=FONT_CAPTION,
+            fg_color=ACCENT_PRIMARY,
+            hover_color=ACCENT_HOVER,
+            command=self._start_inline_ffmpeg_download,
+        )
+        self.ffmpeg_banner_btn.pack(side="right", padx=(8, 0))
+
+        if not self.service.ffmpeg_service.is_available():
+            self.ffmpeg_banner.pack(fill="x", pady=(0, 10))
 
         # 3. Download Location and Download Button Row
         bottom_bar = ctk.CTkFrame(
@@ -417,3 +454,42 @@ class DownloadsPage(ctk.CTkFrame):
             self.tasks_title.configure(text=f"Active Downloads ({active_count} running)")
         else:
             self.tasks_title.configure(text=f"Downloads ({count})")
+
+    def _start_inline_ffmpeg_download(self) -> None:
+        """Start background FFmpeg download directly from the main view."""
+        self.ffmpeg_banner_btn.configure(state="disabled", text="Installing...")
+        self.ffmpeg_banner_label.configure(
+            text="Downloading and setting up FFmpeg in the background...",
+            text_color=TEXT_PRIMARY,
+        )
+
+        def _worker():
+            def _progress(pct: int, msg: str) -> None:
+                self.after(0, lambda: self.ffmpeg_banner_label.configure(text=f"FFmpeg: {msg}"))
+
+            try:
+                path = self.service.ffmpeg_service.download_ffmpeg(progress_callback=_progress)
+                self.service.settings_manager.current.ffmpeg_path = path
+                self.service.settings_manager.save(self.service.settings_manager.current)
+                self.service.ffmpeg_service.set_configured_path(path)
+                self.after(0, self._on_inline_ffmpeg_success)
+            except Exception as e:
+                err_msg = str(e)
+                self.after(0, lambda msg=err_msg: self._on_inline_ffmpeg_error(msg))
+
+        threading.Thread(target=_worker, daemon=True).start()
+
+    def _on_inline_ffmpeg_success(self) -> None:
+        self.ffmpeg_banner_label.configure(
+            text="✓ FFmpeg installed successfully! 1080p+ and MP3 audio conversion are now active.",
+            text_color=COLOR_SUCCESS,
+        )
+        self.ffmpeg_banner_btn.pack_forget()
+        self.after(3500, self.ffmpeg_banner.pack_forget)
+
+    def _on_inline_ffmpeg_error(self, err_msg: str) -> None:
+        self.ffmpeg_banner_label.configure(
+            text=f"FFmpeg download failed: {err_msg}",
+            text_color=COLOR_DANGER,
+        )
+        self.ffmpeg_banner_btn.configure(state="normal", text="⚡ Retry Install")

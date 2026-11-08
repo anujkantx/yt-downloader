@@ -1,5 +1,6 @@
 """Settings view for configuring application preferences, FFmpeg, and defaults."""
 
+import threading
 from tkinter import filedialog
 
 import customtkinter as ctk
@@ -233,6 +234,39 @@ class SettingsPage(ctk.CTkFrame):
         )
         test_ffmpeg_btn.pack(side="left")
 
+        # Action row for Auto-Download
+        action_row = ctk.CTkFrame(ffmpeg_card, fg_color="transparent")
+        action_row.pack(fill="x", padx=16, pady=(0, 8))
+
+        self.auto_download_ffmpeg_btn = ctk.CTkButton(
+            action_row,
+            text="⚡ Auto-Download FFmpeg (1-Click)",
+            font=FONT_CAPTION,
+            fg_color=ACCENT_PRIMARY,
+            hover_color=ACCENT_HOVER,
+            command=self._start_ffmpeg_download,
+        )
+        self.auto_download_ffmpeg_btn.pack(side="left")
+
+        # Inline download progress frame (hidden until download starts)
+        self.ffmpeg_progress_frame = ctk.CTkFrame(ffmpeg_card, fg_color="transparent")
+        self.ffmpeg_progress_bar = ctk.CTkProgressBar(
+            self.ffmpeg_progress_frame,
+            fg_color=BG_TERTIARY,
+            progress_color=ACCENT_PRIMARY,
+        )
+        self.ffmpeg_progress_bar.pack(fill="x", pady=(0, 4))
+        self.ffmpeg_progress_bar.set(0)
+
+        self.ffmpeg_progress_label = ctk.CTkLabel(
+            self.ffmpeg_progress_frame,
+            text="",
+            font=FONT_CAPTION,
+            text_color=TEXT_SECONDARY,
+            anchor="w",
+        )
+        self.ffmpeg_progress_label.pack(fill="x")
+
         # FFmpeg status readout
         self.ffmpeg_status_label = ctk.CTkLabel(
             ffmpeg_card,
@@ -384,11 +418,76 @@ class SettingsPage(ctk.CTkFrame):
                 text=f"✓ {message}",
                 text_color=COLOR_SUCCESS,
             )
+            self.auto_download_ffmpeg_btn.configure(
+                text="⚡ Re-download FFmpeg",
+                fg_color=BG_TERTIARY,
+                hover_color=ACCENT_PRIMARY,
+            )
         else:
             self.ffmpeg_status_label.configure(
                 text=f"⚠ {message}",
                 text_color=COLOR_WARNING,
             )
+            self.auto_download_ffmpeg_btn.configure(
+                text="⚡ Auto-Download FFmpeg (1-Click)",
+                fg_color=ACCENT_PRIMARY,
+                hover_color=ACCENT_HOVER,
+            )
+
+    def _start_ffmpeg_download(self) -> None:
+        """Initiate background download and setup of FFmpeg."""
+        self.auto_download_ffmpeg_btn.configure(state="disabled", text="Downloading...")
+        self.ffmpeg_progress_bar.set(0)
+        self.ffmpeg_progress_label.configure(
+            text="Connecting to download server...",
+            text_color=TEXT_SECONDARY,
+        )
+        self.ffmpeg_progress_frame.pack(fill="x", padx=16, pady=(0, 10))
+
+        def _worker():
+            def _progress(pct: int, msg: str) -> None:
+                self.after(0, lambda: self._update_ffmpeg_download_progress(pct, msg))
+
+            try:
+                path = self.service.ffmpeg_service.download_ffmpeg(progress_callback=_progress)
+                self.after(0, lambda p=path: self._on_ffmpeg_download_success(p))
+            except Exception as e:
+                err_msg = str(e)
+                self.after(0, lambda msg=err_msg: self._on_ffmpeg_download_error(msg))
+
+        threading.Thread(target=_worker, daemon=True).start()
+
+    def _update_ffmpeg_download_progress(self, pct: int, msg: str) -> None:
+        self.ffmpeg_progress_bar.set(pct / 100.0)
+        self.ffmpeg_progress_label.configure(text=msg)
+
+    def _on_ffmpeg_download_success(self, path: str) -> None:
+        self.ffmpeg_entry.delete(0, "end")
+        self.ffmpeg_entry.insert(0, path)
+        self.settings.ffmpeg_path = path
+        self.service.settings_manager.save(self.settings)
+        self.service.ffmpeg_service.set_configured_path(path)
+
+        self.ffmpeg_progress_bar.set(1.0)
+        self.ffmpeg_progress_label.configure(
+            text="✓ FFmpeg installed and verified successfully!",
+            text_color=COLOR_SUCCESS,
+        )
+        self.after(3500, self.ffmpeg_progress_frame.pack_forget)
+
+        self.auto_download_ffmpeg_btn.configure(state="normal")
+        self.check_ffmpeg_status()
+
+    def _on_ffmpeg_download_error(self, err_msg: str) -> None:
+        self.ffmpeg_progress_label.configure(
+            text=f"Download failed: {err_msg}",
+            text_color=COLOR_DANGER,
+        )
+        self.auto_download_ffmpeg_btn.configure(
+            state="normal",
+            text="⚡ Retry Auto-Download",
+            fg_color=COLOR_DANGER,
+        )
 
     def _on_concurrency_change(self, value: float) -> None:
         int_val = int(value)

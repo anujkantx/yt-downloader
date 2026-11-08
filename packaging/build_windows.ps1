@@ -61,6 +61,13 @@ if (-not (Test-Path $IconPath)) {
     & $PythonExe -c "from PIL import Image, ImageDraw; import os; os.makedirs('assets/icons', exist_ok=True); img = Image.new('RGBA', (256, 256), (0,0,0,0)); draw = ImageDraw.Draw(img); draw.rounded_rectangle([16,16,240,240], radius=48, fill=(79,70,229,255)); img.save('assets/icons/app_icon.ico', format='ICO')"
 }
 
+# 5. Ensure FFmpeg binary is present for bundling
+$FfmpegExe = Join-Path $ProjectRoot "assets\bin\ffmpeg.exe"
+if (-not (Test-Path $FfmpegExe)) {
+    Write-Host "`nFFmpeg not found in assets\bin. Downloading automatically..." -ForegroundColor Yellow
+    & $PythonExe -m app.services.ffmpeg_service --download-assets
+}
+
 # 5. Executable Build via PyInstaller
 Write-Host "`n[4/5] Compiling application using PyInstaller..." -ForegroundColor Yellow
 $SpecFile = Join-Path $ScriptDir "VideoDownloader.spec"

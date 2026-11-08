@@ -1,18 +1,29 @@
-"""FFmpeg detection, verification, and location resolution service."""
+"""FFmpeg detection, verification, auto-download, and location resolution service."""
 
 import os
 import shutil
 import subprocess
+import urllib.request
+import zipfile
+from collections.abc import Callable
 from pathlib import Path
 
 from app.utils.logging_config import get_logger
-from app.utils.paths import get_assets_dir, get_base_dir
+from app.utils.paths import get_assets_dir, get_base_dir, get_bin_dir
 
 logger = get_logger("ffmpeg_service")
 
+# Candidate download URLs for static Windows builds
+FFMPEG_DOWNLOAD_URLS = [
+    # Lightweight static build (~52MB, fast and reliable)
+    "https://github.com/ffbinaries/ffbinaries-prebuilt/releases/download/v6.1/ffmpeg-6.1-win-64.zip",
+    # Official Gyan essentials release (~109MB fallback)
+    "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip",
+]
+
 
 class FFmpegService:
-    """Detects, inspects, and validates FFmpeg installations."""
+    """Detects, inspects, validates, and downloads FFmpeg installations."""
 
     def __init__(self, configured_path: str = ""):
         self.configured_path = configured_path.strip()
@@ -24,8 +35,9 @@ class FFmpegService:
         Resolve the absolute path or directory to FFmpeg executable.
         Priority:
           1. User-configured custom path (if valid)
-          2. Bundled FFmpeg (in assets/bin or application base dir)
+          2. Local user bin (LocalAppData) or bundled FFmpeg (assets/bin or application base dir)
           3. System PATH
+          4. Windows package managers (WinGet, Chocolatey, Scoop, Registry)
         """
         # 1. Configured path
         if self.configured_path:
@@ -37,8 +49,9 @@ class FFmpegService:
                 if candidate.is_file():
                     return str(candidate)
 
-        # 2. Bundled in assets/bin or base dir
+        # 2. Local bin or bundled in assets/bin or base dir
         bundled_candidates = [
+            get_bin_dir() / ("ffmpeg.exe" if os.name == "nt" else "ffmpeg"),
             get_assets_dir() / "bin" / ("ffmpeg.exe" if os.name == "nt" else "ffmpeg"),
             get_base_dir() / "bin" / ("ffmpeg.exe" if os.name == "nt" else "ffmpeg"),
             get_base_dir() / ("ffmpeg.exe" if os.name == "nt" else "ffmpeg"),
@@ -151,3 +164,135 @@ class FFmpegService:
         self.configured_path = path.strip()
         self._cached_path = None
         self._cached_version = None
+
+    def download_ffmpeg(
+        self,
+        target_dir: Path | str | None = None,
+        progress_callback: Callable[[int, str], None] | None = None,
+    ) -> str:
+        """
+        Download static FFmpeg executable directly and place it in the target or local bin directory.
+
+        :param target_dir: Directory where ffmpeg.exe will be saved (defaults to LocalAppData bin).
+        :param progress_callback: Callback taking (percentage: int, message: str).
+        :return: Absolute path string to the installed ffmpeg executable.
+        """
+        dest_dir = Path(target_dir) if target_dir else get_bin_dir()
+        dest_dir.mkdir(parents=True, exist_ok=True)
+        exe_name = "ffmpeg.exe" if os.name == "nt" else "ffmpeg"
+        final_exe = dest_dir / exe_name
+
+        def _notify(pct: int, msg: str) -> None:
+            if progress_callback:
+                try:
+                    progress_callback(pct, msg)
+                except Exception:
+                    pass
+
+        _notify(0, "Connecting to download server...")
+
+        last_error: Exception | None = None
+        for url in FFMPEG_DOWNLOAD_URLS:
+            tmp_zip = dest_dir / f"ffmpeg_download_{os.getpid()}.zip"
+            try:
+                logger.info("Attempting FFmpeg download from %s", url)
+                _notify(5, "Downloading static FFmpeg package...")
+
+                req = urllib.request.Request(
+                    url,
+                    headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) yt-downloader/1.0"},
+                )
+                with urllib.request.urlopen(req, timeout=30) as response, open(tmp_zip, "wb") as out_file:
+                    total_size = int(response.headers.get("Content-Length", 0))
+                    downloaded = 0
+                    chunk_size = 128 * 1024  # 128 KB chunks
+
+                    while True:
+                        chunk = response.read(chunk_size)
+                        if not chunk:
+                            break
+                        out_file.write(chunk)
+                        downloaded += len(chunk)
+                        if total_size > 0:
+                            pct = 5 + int((downloaded / total_size) * 80)
+                            downloaded_mb = downloaded / (1024 * 1024)
+                            total_mb = total_size / (1024 * 1024)
+                            _notify(
+                                min(pct, 85),
+                                f"Downloading FFmpeg... {downloaded_mb:.1f} MB / {total_mb:.1f} MB ({pct}%)",
+                            )
+                        else:
+                            downloaded_mb = downloaded / (1024 * 1024)
+                            _notify(50, f"Downloading FFmpeg... {downloaded_mb:.1f} MB")
+
+                _notify(88, "Extracting FFmpeg executable...")
+                extracted = False
+                with zipfile.ZipFile(tmp_zip, "r") as zf:
+                    for member in zf.namelist():
+                        member_path = Path(member)
+                        # Look for ffmpeg.exe or ffmpeg
+                        if member_path.name.lower() in ("ffmpeg.exe", "ffmpeg"):
+                            with zf.open(member) as source, open(final_exe, "wb") as target:
+                                shutil.copyfileobj(source, target)
+                            extracted = True
+                        elif member_path.name.lower() in ("ffprobe.exe", "ffprobe"):
+                            probe_path = dest_dir / member_path.name
+                            with zf.open(member) as source, open(probe_path, "wb") as target:
+                                shutil.copyfileobj(source, target)
+
+                if not extracted:
+                    raise RuntimeError("Could not locate ffmpeg binary inside the downloaded package.")
+
+                # Set executable permission on Unix-like platforms
+                if os.name != "nt":
+                    final_exe.chmod(0o755)
+
+                _notify(95, "Verifying FFmpeg installation...")
+                self._cached_path = None
+                self._cached_version = None
+                if not self._verify_executable(str(final_exe)):
+                    raise RuntimeError("Downloaded FFmpeg executable verification failed.")
+
+                self.configured_path = str(final_exe)
+                _notify(100, "FFmpeg installed successfully!")
+                logger.info("FFmpeg successfully downloaded and installed to %s", final_exe)
+                return str(final_exe)
+
+            except Exception as e:
+                logger.warning("Download from %s failed: %s", url, e)
+                last_error = e
+            finally:
+                if tmp_zip.exists():
+                    try:
+                        tmp_zip.unlink(missing_ok=True)
+                    except Exception:
+                        pass
+
+        raise RuntimeError(f"Failed to auto-download FFmpeg from all sources: {last_error}")
+
+
+if __name__ == "__main__":
+    import sys
+
+    svc = FFmpegService()
+    if "--download" in sys.argv:
+        print("Starting FFmpeg download to LocalAppData bin...")
+
+        def _print_progress(pct: int, msg: str) -> None:
+            print(f"[{pct}%] {msg}")
+
+        path = svc.download_ffmpeg(progress_callback=_print_progress)
+        print(f"\nSuccess! FFmpeg installed at: {path}")
+    elif "--download-assets" in sys.argv:
+        print("Starting FFmpeg download to assets/bin...")
+
+        def _print_progress(pct: int, msg: str) -> None:
+            print(f"[{pct}%] {msg}")
+
+        target = get_assets_dir() / "bin"
+        path = svc.download_ffmpeg(target_dir=target, progress_callback=_print_progress)
+        print(f"\nSuccess! FFmpeg installed at: {path}")
+    else:
+        avail, status = svc.get_status_info()
+        print("Available:", avail)
+        print("Status:", status)

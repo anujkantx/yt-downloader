@@ -42,7 +42,7 @@ Built with **CustomTkinter** for a polished dark theme and **yt-dlp** for robust
 - **📊 Real-Time Metrics**: Live progress bar, download speed (e.g., `8.2 MB/s`), downloaded vs total file size, and ETA.
 - **🔄 Task Controls**: Cooperative cancellation (cleanly deletes partial `.part` files), retry failed tasks, and clear completed items.
 - **🗃️ Persistent SQLite History**: Keeps record of completed downloads with quick actions to play files, reveal in Windows Explorer, or re-download.
-- **🛠️ Built-in FFmpeg Diagnostics**: Auto-detects system FFmpeg, bundled binaries, or custom user paths, with automatic fallbacks for pre-merged formats.
+- **🛠️ 1-Click Auto-Download FFmpeg**: Auto-detects system FFmpeg or downloads and installs static FFmpeg with a single click directly inside the app, with automatic fallback for pre-merged formats.
 - **🛡️ Safe Windows Filesystem Handling**: Automatically cleans forbidden characters (`< > : " / \ | ? *`), handles reserved device names (`CON`, `PRN`), and prevents file overwrite collisions.
 
 ---

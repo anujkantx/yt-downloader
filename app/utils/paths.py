@@ -45,6 +45,13 @@ def get_database_path() -> Path:
     return db_dir / "downloads.db"
 
 
+def get_bin_dir() -> Path:
+    """Return path to the persistent binaries directory in LocalAppData."""
+    bin_dir = get_app_data_dir() / "bin"
+    bin_dir.mkdir(parents=True, exist_ok=True)
+    return bin_dir
+
+
 def get_log_dir() -> Path:
     """Return path to the log directory."""
     log_dir = get_app_data_dir() / "logs"
@@ -73,3 +80,4 @@ def ensure_app_dirs() -> None:
     get_config_path().parent.mkdir(parents=True, exist_ok=True)
     get_database_path().parent.mkdir(parents=True, exist_ok=True)
     get_log_dir().mkdir(parents=True, exist_ok=True)
+    get_bin_dir().mkdir(parents=True, exist_ok=True)
