@@ -1,0 +1,23 @@
+# ==============================================================================
+# GitHub Code Owners for yt-downloader
+# Automatically requests review from project maintainer on all Pull Requests.
+# ==============================================================================
+
+# Global default: @anujkantx owns everything
+* @anujkantx
+
+# Core application engine and user interface
+/app/ @anujkantx
+/main.py @anujkantx
+
+# Unit and integration test suites
+/tests/ @anujkantx
+
+# Automated CI/CD workflows and repository governance
+/.github/ @anujkantx
+
+# Packaging, Inno Setup, and PyInstaller configs
+/packaging/ @anujkantx
+
+# Website landing page and documentation assets
+/docs/ @anujkantx
