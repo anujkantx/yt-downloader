@@ -178,14 +178,14 @@ function initDynamicDownloadButtons() {
       heroCtaContainer.innerHTML = `
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full">
           <!-- Primary Mobile CTA: Seal Android APK -->
-          <a href="${sealApkDownloadUrl}" target="_blank"
+          <a href="${sealApkDownloadUrl}" target="_blank" rel="noopener noreferrer"
              class="w-full sm:w-auto px-6 sm:px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm sm:text-base shadow-md transition flex items-center justify-center gap-2.5 whitespace-nowrap shrink-0">
             <i data-lucide="smartphone" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 shrink-0"></i>
             <span class="whitespace-nowrap">Download Seal APK (Android)</span>
           </a>
 
           <!-- Secondary CTA: Seal GitHub Repo -->
-          <a href="${sealRepoUrl}" target="_blank"
+          <a href="${sealRepoUrl}" target="_blank" rel="noopener noreferrer"
              class="w-full sm:w-auto px-5 sm:px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-semibold text-sm sm:text-base transition flex items-center justify-center gap-2 card-shadow whitespace-nowrap shrink-0">
             <i data-lucide="github" class="w-4 h-4 sm:w-5 sm:h-5 shrink-0"></i>
             <span class="whitespace-nowrap">Seal on GitHub</span>
@@ -228,7 +228,7 @@ function initDynamicDownloadButtons() {
           </a>
 
           <!-- Secondary CTA: GitHub Repo -->
-          <a href="${githubRepoUrl}" target="_blank"
+          <a href="${githubRepoUrl}" target="_blank" rel="noopener noreferrer"
              class="w-full sm:w-auto px-5 sm:px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-semibold text-sm sm:text-base transition flex items-center justify-center gap-2 card-shadow whitespace-nowrap shrink-0">
             <i data-lucide="star" class="w-4 h-4 sm:w-5 sm:h-5 text-amber-500 fill-amber-500 shrink-0"></i>
             <span class="whitespace-nowrap">Star on GitHub</span>

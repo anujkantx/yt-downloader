@@ -10,23 +10,29 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
+  text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   background-color: #F8FAFC;
   color: #0F172A;
   font-family: 'Plus Jakarta Sans', sans-serif;
   position: relative;
-  /* Hide scrollbar for standard browsers */
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
+  -ms-overflow-style: none;
 }
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-  /* Hide scrollbar on all inner elements */
-  scrollbar-width: none !important;
-  -ms-overflow-style: none !important;
+  -ms-overflow-style: none;
+}
+
+/* Feature-gated standard scrollbar-width (Zero compat warnings) */
+@supports (scrollbar-width: none) {
+  html,
+  body,
+  * {
+    scrollbar-width: none;
+  }
 }
 
 /* Hide scrollbars completely across Chrome, Safari, Edge, Opera */
