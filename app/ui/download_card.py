@@ -100,11 +100,11 @@ class DownloadCard(ctk.CTkFrame):
             header_row,
             text=self.task.status.display_name,
             font=FONT_SMALL,
-            corner_radius=6,
+            corner_radius=10,
             fg_color=STATUS_COLOR_MAP.get(self.task.status, TEXT_MUTED),
             text_color="#FFFFFF",
-            padx=8,
-            pady=2,
+            padx=10,
+            pady=3,
         )
         self.status_badge.pack(side="right", padx=(8, 0))
 
@@ -144,10 +144,11 @@ class DownloadCard(ctk.CTkFrame):
         # Create action buttons
         self.cancel_btn = ctk.CTkButton(
             self.actions_row,
-            text="Cancel",
+            text="✕ Cancel",
             font=FONT_CAPTION,
-            width=65,
-            height=26,
+            width=70,
+            height=28,
+            corner_radius=8,
             fg_color="transparent",
             border_width=1,
             border_color=BORDER_COLOR,
@@ -157,10 +158,11 @@ class DownloadCard(ctk.CTkFrame):
 
         self.retry_btn = ctk.CTkButton(
             self.actions_row,
-            text="Retry",
+            text="🔄 Retry",
             font=FONT_CAPTION,
-            width=65,
-            height=26,
+            width=70,
+            height=28,
+            corner_radius=8,
             fg_color=ACCENT_PRIMARY,
             hover_color=ACCENT_HOVER,
             command=self._on_retry_click,
@@ -168,10 +170,11 @@ class DownloadCard(ctk.CTkFrame):
 
         self.open_file_btn = ctk.CTkButton(
             self.actions_row,
-            text="Open File",
+            text="▶ Play File",
             font=FONT_CAPTION,
-            width=75,
-            height=26,
+            width=80,
+            height=28,
+            corner_radius=8,
             fg_color=BG_TERTIARY,
             hover_color=ACCENT_PRIMARY,
             command=self._on_open_file_click,
@@ -179,10 +182,11 @@ class DownloadCard(ctk.CTkFrame):
 
         self.open_folder_btn = ctk.CTkButton(
             self.actions_row,
-            text="Open Folder",
+            text="📁 Show in Folder",
             font=FONT_CAPTION,
-            width=85,
-            height=26,
+            width=110,
+            height=28,
+            corner_radius=8,
             fg_color=BG_TERTIARY,
             hover_color=ACCENT_PRIMARY,
             command=self._on_open_folder_click,
@@ -190,10 +194,11 @@ class DownloadCard(ctk.CTkFrame):
 
         self.remove_btn = ctk.CTkButton(
             self.actions_row,
-            text="Dismiss",
+            text="✕ Dismiss",
             font=FONT_CAPTION,
-            width=65,
-            height=26,
+            width=70,
+            height=28,
+            corner_radius=8,
             fg_color="transparent",
             hover_color=BG_TERTIARY,
             text_color=TEXT_MUTED,

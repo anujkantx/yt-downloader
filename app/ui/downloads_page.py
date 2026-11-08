@@ -191,10 +191,11 @@ class DownloadsPage(ctk.CTkFrame):
         # Download Button
         self.download_btn = ctk.CTkButton(
             bottom_bar,
-            text="⬇ Start Download",
+            text="🚀 Start Download",
             font=FONT_SUBHEADING,
-            width=160,
+            width=175,
             height=44,
+            corner_radius=10,
             fg_color=ACCENT_PRIMARY,
             hover_color=ACCENT_HOVER,
             command=self._start_download,
