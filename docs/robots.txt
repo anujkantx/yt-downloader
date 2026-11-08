@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://anujkantx.github.io/yt-downloader/sitemap.xml
