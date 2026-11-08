@@ -504,11 +504,11 @@
 
         <!-- Two Clear Seal Action Buttons -->
         <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
-          <!-- 1. Direct APK Download Link -->
-          <a href="https://github.com/JunkFood02/Seal/releases/latest/download/Seal-1.12.1-universal-release.apk"
+          <!-- 1. Direct APK Download Link (Auto-resolved to latest APK by main.js) -->
+          <a id="seal-direct-apk-btn" href="https://github.com/JunkFood02/Seal/releases/latest" target="_blank" rel="noopener noreferrer"
             class="w-full sm:w-auto px-6 sm:px-7 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 whitespace-nowrap shrink-0">
             <i data-lucide="download" class="w-4 h-4 shrink-0"></i>
-            <span class="whitespace-nowrap">Download Seal APK (Direct)</span>
+            <span id="seal-direct-apk-text" class="whitespace-nowrap">Download Seal APK (Direct)</span>
           </a>
 
           <!-- 2. Seal GitHub Repository Link -->

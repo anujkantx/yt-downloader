@@ -15,7 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // 4. One-Click Copy Buttons for Developer Commands
   initCopyCommands();
 
-  // 5. Handle Window Resize (Orientation changes / Desktop testing)
+  // 5. Silently resolve latest direct Seal APK from official GitHub API
+  resolveLatestSealApk();
+
+  // 6. Handle Window Resize (Orientation changes / Desktop testing)
   let resizeTimer;
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
@@ -149,6 +152,8 @@ function getClientDevice() {
   return { isAndroid, isIOS, isWindows, isMobile };
 }
 
+let resolvedSealApkUrl = null;
+
 /**
  * Render appropriate download buttons based on detected device
  */
@@ -161,7 +166,7 @@ function initDynamicDownloadButtons() {
   // Direct Download URLs (Bypasses GitHub UI — triggers instant browser download)
   const windowsInstallerUrl = "https://github.com/anujkantx/yt-downloader/releases/latest/download/VideoDownloader-Setup.exe";
   const windowsPortableZipUrl = "https://github.com/anujkantx/yt-downloader/releases/latest/download/VideoDownloader-Portable.zip";
-  const sealApkDownloadUrl = "https://github.com/JunkFood02/Seal/releases/latest/download/Seal-1.12.1-universal-release.apk";
+  const sealApkDownloadUrl = resolvedSealApkUrl || "https://github.com/JunkFood02/Seal/releases/latest";
   const sealRepoUrl = "https://github.com/JunkFood02/Seal";
   const githubRepoUrl = "https://github.com/anujkantx/yt-downloader";
 
@@ -178,7 +183,7 @@ function initDynamicDownloadButtons() {
       heroCtaContainer.innerHTML = `
         <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full">
           <!-- Primary Mobile CTA: Seal Android APK -->
-          <a href="${sealApkDownloadUrl}" target="_blank" rel="noopener noreferrer"
+          <a id="hero-seal-apk-btn" href="${sealApkDownloadUrl}" target="_blank" rel="noopener noreferrer"
              class="w-full sm:w-auto px-6 sm:px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm sm:text-base shadow-md transition flex items-center justify-center gap-2.5 whitespace-nowrap shrink-0">
             <i data-lucide="smartphone" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-400 shrink-0"></i>
             <span class="whitespace-nowrap">Download Seal APK (Android)</span>
@@ -266,4 +271,44 @@ function initDynamicDownloadButtons() {
 
   // Refresh Lucide icons
   renderIcons();
+}
+
+/**
+ * Silently fetch latest official Seal APK direct link from GitHub API
+ * Falls back safely to https://github.com/JunkFood02/Seal/releases/latest
+ */
+async function resolveLatestSealApk() {
+  try {
+    const res = await fetch("https://api.github.com/repos/JunkFood02/Seal/releases/latest");
+    if (!res.ok) return;
+    const release = await res.json();
+    const asset =
+      release.assets?.find((a) => a.name.includes("universal-release.apk")) ||
+      release.assets?.find((a) => a.name.endsWith(".apk"));
+
+    if (asset && asset.browser_download_url) {
+      resolvedSealApkUrl = asset.browser_download_url;
+
+      // Update dedicated Android section button
+      const directBtn = document.getElementById("seal-direct-apk-btn");
+      if (directBtn) {
+        directBtn.href = resolvedSealApkUrl;
+      }
+
+      // Update mobile hero button if rendered
+      const heroSealBtn = document.getElementById("hero-seal-apk-btn");
+      if (heroSealBtn) {
+        heroSealBtn.href = resolvedSealApkUrl;
+      }
+
+      // Update navbar button if on mobile
+      const navBtn = document.getElementById("nav-download-btn");
+      const device = getClientDevice();
+      if ((device.isAndroid || (device.isMobile && !device.isWindows)) && navBtn) {
+        navBtn.href = resolvedSealApkUrl;
+      }
+    }
+  } catch (err) {
+    // Fallback stays on official releases page
+  }
 }
