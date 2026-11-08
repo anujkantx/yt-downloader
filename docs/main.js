@@ -18,7 +18,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // 5. Silently resolve latest direct Seal APK from official GitHub API
   resolveLatestSealApk();
 
-  // 6. Handle Window Resize (Orientation changes / Desktop testing)
+  // 6. Dynamic Real-time Simulated Download Progress
+  initDemoDownloadSimulation();
+
+  // 7. Handle Window Resize (Orientation changes / Desktop testing)
   let resizeTimer;
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimer);
@@ -317,4 +320,82 @@ async function resolveLatestSealApk() {
   } catch (err) {
     // Fallback stays on official releases page
   }
+}
+
+/**
+ * Interactive Download Simulation for Demo Preview Card
+ * Synchronizes progress bar width, MB downloaded, percentage, speed & ETA in real-time
+ */
+function initDemoDownloadSimulation() {
+  const progressBar = document.getElementById("demo-progress-bar");
+  const numbersText = document.getElementById("demo-download-numbers");
+  const speedText = document.getElementById("demo-speed-text");
+  const statusBadge = document.getElementById("demo-download-status");
+
+  if (!progressBar || !numbersText || !speedText || !statusBadge) return;
+
+  const totalMB = 116.8;
+  // Start from 84.2 MB (72%) on initial load, then smoothly loops from 0%
+  let downloadedMB = 84.2;
+  let isHoldState = false;
+
+  function tick() {
+    if (isHoldState) return;
+
+    // Realistic fluctuating download speed around 12.2 - 15.6 MB/s
+    const speed = 12.2 + Math.sin(downloadedMB * 0.8) * 2.2 + (Math.random() * 1.2);
+    // Delta per 120ms tick (~0.12s)
+    const delta = speed * 0.12;
+    downloadedMB += delta;
+
+    if (downloadedMB >= totalMB) {
+      downloadedMB = totalMB;
+      progressBar.style.width = "100%";
+      progressBar.classList.remove("bg-slate-900");
+      progressBar.classList.add("bg-emerald-500");
+
+      numbersText.textContent = `${totalMB.toFixed(1)} MB / ${totalMB.toFixed(1)} MB (100%)`;
+      speedText.textContent = "✓ Complete • 116.8 MB saved";
+
+      statusBadge.textContent = "Completed";
+      statusBadge.className =
+        "text-[10px] sm:text-[11px] px-2 sm:px-2.5 py-0.5 rounded-full bg-emerald-500 text-slate-950 font-bold shrink-0 transition-all duration-300";
+
+      isHoldState = true;
+
+      // Hold complete state for 2.4s, then smoothly restart from 0%
+      setTimeout(() => {
+        downloadedMB = 0;
+        progressBar.style.transition = "none";
+        progressBar.style.width = "0%";
+        progressBar.classList.remove("bg-emerald-500");
+        progressBar.classList.add("bg-slate-900");
+
+        statusBadge.textContent = "Downloading";
+        statusBadge.className =
+          "text-[10px] sm:text-[11px] px-2 sm:px-2.5 py-0.5 rounded-full bg-slate-900 text-white font-semibold shrink-0 transition-all duration-300";
+
+        numbersText.textContent = `0.0 MB / ${totalMB.toFixed(1)} MB (0%)`;
+        speedText.textContent = "12.4 MB/s • ETA: 9s";
+
+        // Re-enable CSS transition on next animation frame
+        requestAnimationFrame(() => {
+          progressBar.style.transition = "width 0.15s ease-out";
+          isHoldState = false;
+        });
+      }, 2400);
+
+      return;
+    }
+
+    const percent = Math.min(99, (downloadedMB / totalMB) * 100);
+    const eta = Math.max(1, Math.ceil((totalMB - downloadedMB) / speed));
+
+    progressBar.style.width = `${percent.toFixed(1)}%`;
+    numbersText.textContent = `${downloadedMB.toFixed(1)} MB / ${totalMB.toFixed(1)} MB (${Math.round(percent)}%)`;
+    speedText.textContent = `${speed.toFixed(1)} MB/s • ETA: ${eta}s`;
+  }
+
+  // Update smoothly every 120ms
+  setInterval(tick, 120);
 }

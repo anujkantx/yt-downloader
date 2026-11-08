@@ -373,19 +373,19 @@
                   <div class="text-[10px] sm:text-[11px] text-slate-500 truncate">Rick Astley • 3:32 • 2160p (MP4)</div>
                 </div>
               </div>
-              <span
-                class="text-[10px] sm:text-[11px] px-2 sm:px-2.5 py-0.5 rounded-full bg-slate-900 text-white font-semibold shrink-0">Downloading</span>
+              <span id="demo-download-status"
+                class="text-[10px] sm:text-[11px] px-2 sm:px-2.5 py-0.5 rounded-full bg-slate-900 text-white font-semibold shrink-0 transition-colors duration-300">Downloading</span>
             </div>
 
             <!-- Animated Progress Bar -->
             <div class="w-full bg-slate-200 h-2 sm:h-2.5 rounded-full overflow-hidden">
-              <div class="bg-slate-900 h-full rounded-full animate-download-bar"></div>
+              <div id="demo-progress-bar" class="bg-slate-900 h-full rounded-full transition-all duration-150 ease-out" style="width: 72%;"></div>
             </div>
 
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-[10px] sm:text-[11px] text-slate-600 font-mono font-medium">
-              <span>84.2 MB / 116.8 MB (72%)</span>
+              <span id="demo-download-numbers">84.2 MB / 116.8 MB (72%)</span>
               <span class="text-slate-900 font-bold flex items-center gap-1.5"><i data-lucide="gauge"
-                  class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-700"></i> 12.4 MB/s • ETA: 3s</span>
+                  class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-slate-700"></i> <span id="demo-speed-text">12.4 MB/s • ETA: 3s</span></span>
             </div>
           </div>
         </div>
