@@ -238,6 +238,13 @@
         </span>
         <span class="hidden sm:inline text-slate-300">•</span>
         <span class="inline-flex items-center gap-1.5">
+          <i data-lucide="tag" class="w-3.5 h-3.5 text-slate-700"></i>
+          <a href="https://github.com/anujkantx/yt-downloader/releases" target="_blank" rel="noopener noreferrer" class="text-slate-900 font-bold hover:underline inline-flex items-center gap-1 whitespace-nowrap">
+            View All Releases <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          </a>
+        </span>
+        <span class="hidden sm:inline text-slate-300">•</span>
+        <span class="inline-flex items-center gap-1.5">
           <i data-lucide="smartphone" class="w-3.5 h-3.5 text-emerald-600"></i>
           <span>Looking for Android?</span>
           <a href="#android-section" class="text-slate-900 font-bold hover:underline inline-flex items-center gap-1 whitespace-nowrap">
@@ -502,8 +509,8 @@
             class="bg-slate-800 px-1.5 py-0.5 rounded text-xs font-mono text-emerald-400">yt-dlp</code> engine.
         </p>
 
-        <!-- Two Clear Seal Action Buttons -->
-        <div class="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+        <!-- Action Buttons for Seal Android -->
+        <div class="flex flex-col sm:flex-row flex-wrap items-center gap-3 sm:gap-4">
           <!-- 1. Direct APK Download Link (Auto-resolved to latest APK by main.js) -->
           <a id="seal-direct-apk-btn" href="https://github.com/JunkFood02/Seal/releases/latest" target="_blank" rel="noopener noreferrer"
             class="w-full sm:w-auto px-6 sm:px-7 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-sm transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 whitespace-nowrap shrink-0">
@@ -511,11 +518,18 @@
             <span id="seal-direct-apk-text" class="whitespace-nowrap">Download Seal APK (Direct)</span>
           </a>
 
-          <!-- 2. Seal GitHub Repository Link -->
-          <a href="https://github.com/JunkFood02/Seal" target="_blank" rel="noopener noreferrer"
+          <!-- 2. View All Releases on GitHub (Arm64, x86, Changelog) -->
+          <a href="https://github.com/JunkFood02/Seal/releases/latest" target="_blank" rel="noopener noreferrer"
             class="w-full sm:w-auto px-5 sm:px-6 py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-semibold text-sm border border-slate-700 transition flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
+            <i data-lucide="layers" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+            <span class="whitespace-nowrap">View All GitHub Releases</span>
+          </a>
+
+          <!-- 3. Seal GitHub Repository Link -->
+          <a href="https://github.com/JunkFood02/Seal" target="_blank" rel="noopener noreferrer"
+            class="w-full sm:w-auto px-5 sm:px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 hover:text-white font-medium text-sm border border-slate-700/80 transition flex items-center justify-center gap-2 whitespace-nowrap shrink-0">
             <i data-lucide="github" class="w-4 h-4 shrink-0"></i>
-            <span class="whitespace-nowrap">Seal GitHub Repository</span>
+            <span class="whitespace-nowrap">Source Code</span>
           </a>
         </div>
 

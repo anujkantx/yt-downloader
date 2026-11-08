@@ -189,11 +189,11 @@ function initDynamicDownloadButtons() {
             <span class="whitespace-nowrap">Download Seal APK (Android)</span>
           </a>
 
-          <!-- Secondary CTA: Seal GitHub Repo -->
-          <a href="${sealRepoUrl}" target="_blank" rel="noopener noreferrer"
+          <!-- Secondary CTA: Seal GitHub Releases -->
+          <a href="https://github.com/JunkFood02/Seal/releases/latest" target="_blank" rel="noopener noreferrer"
              class="w-full sm:w-auto px-5 sm:px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 border border-slate-300 font-semibold text-sm sm:text-base transition flex items-center justify-center gap-2 card-shadow whitespace-nowrap shrink-0">
-            <i data-lucide="github" class="w-4 h-4 sm:w-5 sm:h-5 shrink-0"></i>
-            <span class="whitespace-nowrap">Seal on GitHub</span>
+            <i data-lucide="layers" class="w-4 h-4 sm:w-5 sm:h-5 text-emerald-600 shrink-0"></i>
+            <span class="whitespace-nowrap">View All GitHub Releases</span>
           </a>
         </div>
 
@@ -246,6 +246,13 @@ function initDynamicDownloadButtons() {
             <span>Prefer no setup?</span>
             <a href="${windowsPortableZipUrl}" class="text-slate-900 font-bold hover:underline inline-flex items-center gap-1 whitespace-nowrap">
               Download Portable (.zip) <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </a>
+          </span>
+          <span class="hidden sm:inline text-slate-300">•</span>
+          <span class="inline-flex items-center gap-1.5">
+            <i data-lucide="tag" class="w-3.5 h-3.5 text-slate-700"></i>
+            <a href="https://github.com/anujkantx/yt-downloader/releases" target="_blank" rel="noopener noreferrer" class="text-slate-900 font-bold hover:underline inline-flex items-center gap-1 whitespace-nowrap">
+              View All Releases <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
             </a>
           </span>
           <span class="hidden sm:inline text-slate-300">•</span>
