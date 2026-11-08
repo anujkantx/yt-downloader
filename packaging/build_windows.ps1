@@ -107,6 +107,17 @@ if ($IsccExe) {
 $OutputFolder = Join-Path $DistDir "VideoDownloader"
 $Executable = Join-Path $OutputFolder "VideoDownloader.exe"
 $SetupExe = Join-Path $ProjectRoot "dist_installer\VideoDownloader-Setup.exe"
+$PortableZip = Join-Path $ProjectRoot "dist_installer\VideoDownloader-Portable.zip"
+
+# Generate Portable ZIP archive if OutputFolder exists
+if (Test-Path $OutputFolder) {
+    Write-Host "`nGenerating standalone Portable ZIP archive..." -ForegroundColor Yellow
+    $InstallerOutDir = Join-Path $ProjectRoot "dist_installer"
+    if (-not (Test-Path $InstallerOutDir)) { New-Item -ItemType Directory -Path $InstallerOutDir -Force | Out-Null }
+    if (Test-Path $PortableZip) { Remove-Item -Force $PortableZip }
+    Compress-Archive -Path "$OutputFolder\*" -DestinationPath $PortableZip -Force
+    Write-Host "Portable ZIP generated: $PortableZip" -ForegroundColor Green
+}
 
 if (Test-Path $Executable) {
     Write-Host "`n=================================================" -ForegroundColor Green
@@ -116,7 +127,9 @@ if (Test-Path $Executable) {
     Write-Host "Executable:        $Executable" -ForegroundColor Cyan
     if (Test-Path $SetupExe) {
         Write-Host "Website Setup:     $SetupExe" -ForegroundColor Yellow
-        Write-Host "                   (This is the single file you upload to your website!)" -ForegroundColor Yellow
+    }
+    if (Test-Path $PortableZip) {
+        Write-Host "Portable ZIP:      $PortableZip" -ForegroundColor Yellow
     }
 } else {
     Write-Error "Executable not found at expected path: $Executable"
